@@ -110,7 +110,12 @@ func ParseCoder(err error) Coder {
 
 	if v, ok := err.(*withCode); ok {
 		if coder, ok := codes[v.code]; ok {
-			return coder
+			return &defaultCoder{
+				C:    coder.Code(),
+				HTTP: coder.HTTPStatus(),
+				Ext:  coder.String(),
+				Ref:  v.err.Error(),
+			}
 		}
 	}
 
